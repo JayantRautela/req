@@ -6,6 +6,8 @@ import (
 	"os"
 
 	"github.com/JayantRautela/req/internal/input"
+	"github.com/JayantRautela/req/internal/normalizer"
+	"github.com/JayantRautela/req/internal/validator"
 )
 
 func main() {
@@ -20,17 +22,14 @@ func main() {
 		return
 	}
 
-	fmt.Println()
-	fmt.Println("Request collected successfully!")
-	fmt.Println()
+	requestConfig = normalizer.NormalizeRequest(requestConfig)
 
-	fmt.Println("URL:", requestConfig.URL)
-	fmt.Println("Method:", requestConfig.Method)
-	fmt.Println("Body:")
-	fmt.Println(requestConfig.Body)
+	err = validator.ValidateRequest(requestConfig)
 
-	fmt.Println("Headers:")
-	for key, value := range requestConfig.Headers {
-		fmt.Printf("%s: %s\n", key, value)
+	if err != nil {
+		fmt.Println("Validation failed:", err)
+		return
 	}
+
+	fmt.Println("All validation passed")
 }
