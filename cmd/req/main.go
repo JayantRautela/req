@@ -7,13 +7,14 @@ import (
 
 	"github.com/JayantRautela/req/internal/input"
 	"github.com/JayantRautela/req/internal/normalizer"
+	"github.com/JayantRautela/req/internal/request"
 	"github.com/JayantRautela/req/internal/validator"
 )
 
 func main() {
-	fmt.Println("~ req");
+	fmt.Println("~ req")
 
-	reader := bufio.NewReader(os.Stdin);
+	reader := bufio.NewReader(os.Stdin)
 
 	requestConfig, err := input.CollectRequest(reader)
 
@@ -32,4 +33,17 @@ func main() {
 	}
 
 	fmt.Println("All validation passed")
+
+	response, err := request.SendRequest(requestConfig)
+
+	if err != nil {
+		fmt.Println("Request failed:", err)
+		return
+	}
+
+	fmt.Println("Status:", response.Status)
+	fmt.Println("Time taken:", response.Duration)
+	fmt.Println()
+	fmt.Println("Response body:")
+	fmt.Println(string(response.Body))
 }
