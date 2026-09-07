@@ -22,6 +22,10 @@ func ValidateRequest(config model.RequestConfig) error {
 		return err
 	}
 
+	if err := ValidateHeaders(config.Headers); err != nil {
+		return err
+	}
+
 	return nil
 }
 
