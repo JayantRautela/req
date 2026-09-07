@@ -34,7 +34,8 @@ func main() {
 
 	fmt.Println("All validation passed")
 
-	response, err := request.SendRequest(requestConfig)
+	client := request.NewClient()
+	response, err := request.SendRequest(client, requestConfig)
 
 	if err != nil {
 		fmt.Println("Request failed:", err)

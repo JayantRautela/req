@@ -9,8 +9,13 @@ import (
 	"github.com/JayantRautela/req/internal/model"
 )
 
+func NewClient() *http.Client {
+	return &http.Client{
+		Timeout: 30 * time.Second,
+	}
+}
 
-func SendRequest(config model.RequestConfig) (model.Response, error) {
+func SendRequest(client *http.Client ,config model.RequestConfig) (model.Response, error) {
 	requestBody := bytes.NewBufferString(config.Body)
 
 	req, err := http.NewRequest(
@@ -25,10 +30,6 @@ func SendRequest(config model.RequestConfig) (model.Response, error) {
 
 	for key, value := range config.Headers {
 		req.Header.Set(key, value)
-	}
-
-	client := &http.Client{
-		Timeout: 30 * time.Second,
 	}
 
 	startTime := time.Now()
