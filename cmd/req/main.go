@@ -7,6 +7,7 @@ import (
 
 	"github.com/JayantRautela/req/internal/input"
 	"github.com/JayantRautela/req/internal/normalizer"
+	"github.com/JayantRautela/req/internal/output"
 	"github.com/JayantRautela/req/internal/request"
 	"github.com/JayantRautela/req/internal/validator"
 )
@@ -42,9 +43,5 @@ func main() {
 		return
 	}
 
-	fmt.Println("Status:", response.Status)
-	fmt.Println("Time taken:", response.Duration)
-	fmt.Println()
-	fmt.Println("Response body:")
-	fmt.Println(string(response.Body))
+	output.PrintResponse(response)
 }
