@@ -58,45 +58,6 @@ func readBody(reader *bufio.Reader) (string, error) {
 	return strings.Join(lines, "\n"), nil
 }
 
-func readHeaders(reader *bufio.Reader) (map[string]string, error) {
-	fmt.Println("Enter headers in the format 'Key: Value'.")
-	fmt.Println("Press Enter on an empty line when finished:")
-
-	headers := make(map[string]string)
-
-	for {
-		line, err := reader.ReadString('\n')
-
-		if err != nil && err != io.EOF {
-			return nil, err
-		}
-
-		line = strings.TrimSpace(line)
-
-		if line == "" {
-			break
-		}
-
-		parts := strings.SplitN(line, ":", 2)
-
-		if len(parts) != 2 {
-			fmt.Println("Invalid header format. Use 'Key: Value'.")
-			continue
-		}
-
-		key := strings.TrimSpace(parts[0])
-		value := strings.TrimSpace(parts[1])
-
-		headers[key] = value
-
-		if err == io.EOF {
-			break
-		}
-	}
-
-	return headers, nil
-}
-
 func CollectRequest(reader *bufio.Reader) (model.RequestConfig, error) {
 	url, err := readURL(reader)
 	if err != nil {
@@ -113,7 +74,7 @@ func CollectRequest(reader *bufio.Reader) (model.RequestConfig, error) {
 		return model.RequestConfig{}, err
 	}
 
-	headers, err := readHeaders(reader)
+	headers, err := CollectHeaders(reader)
 	if err != nil {
 		return model.RequestConfig{}, err
 	}
